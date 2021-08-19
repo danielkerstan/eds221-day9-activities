@@ -37,12 +37,23 @@ mack_creek_lengths <- mack_creek_vertebrates %>%
   clean_names() %>% 
   select(year:sampledate) %>% 
   filter(section == "CC") %>% 
-  mutate(across(where(is.character, tolower))) %>% 
+  mutate(across(where(is.character), tolower)) %>% 
   drop_na(species) %>% 
   group_by(species) %>% 
   summarize(mean_length_cm = mean(length1, na.rm = TRUE),
             sd_length_cm = sd(length1, na.rm = TRUE)) %>% 
   ungroup()
+```
+
+```{r}
+df <- tribble(
+  ~"A", ~"B", ~"C",
+  "D", "E", 1,
+  "G", "H", 2
+)
+
+df %>% 
+  mutate(across(where(is.character), tolower))
 ```
 
 ### reprex 2
@@ -55,10 +66,21 @@ mack_creek_vertebrates %>%
   clean_names() %>% 
   filter(species == "ONCL") %>% 
   ggplot(aes(x = length1, y = weight)) +
-         geom_point(aes(shape = 12), color = "purple") +
+         geom_point(shape = 12, color = "purple") +
          theme_minimal() +
          labs(x = "Cutthroat trout length (cm)",
               y = "Weight (g)")
+```
+
+```{r}
+df <- tribble(
+  ~"A", ~"B",
+  1, 2,
+  3, 4
+)
+
+ggplot(df, aes(x = A, y = B)) +
+  geom_point(shape = 12, color = "purple")
 ```
 
 ## End
